@@ -1,5 +1,5 @@
 - name: Prepare the system for Slurm
-  hosts: localhost
+  hosts: controller
 
   tasks:
   - name: Create slurm user
@@ -57,7 +57,7 @@
       name: mailutils
       state: present
 - name: Slurm execution hosts
-  hosts: localhost
+  hosts: controller
   roles:
     - role: ansible-slurm
       become: True
@@ -132,15 +132,15 @@
     slurm_create_user: yes
     slurm_munge_key: "/etc/munge/munge.key"
     slurm_nodes:
-      - name: "{{ groups['slaves']| join(',') }}"
+      - name: "{{ groups['computes']| join(',') }}"
         CoresPerSocket: 1
-        Sockets: 2
+        Sockets: 1
         ThreadsPerCore: 1
     slurm_partitions:
       - name: computing_nodes
         Default: YES
         MaxTime: UNLIMITED
-        Nodes: "{{ groups['slaves']| join(',') }}"
+        Nodes: "{{ groups['computes']| join(',') }}"
     slurm_roles: [ 'controller', 'dbd']
     slurm_user:
       comment: "Slurm Workload Manager"
