@@ -1,5 +1,5 @@
 - name: Prepare the system for Slurm
-  hosts: slaves
+  hosts: computes
 
   tasks:
   - name: Create slurm user
@@ -26,7 +26,7 @@
       owner: slurm
       mode: 0700
 - name: Cpying hosts file to nodes
-  hosts: slaves
+  hosts: computes
   tasks:
     - name: Cpying hosts file to nodes
       become: true
@@ -37,7 +37,7 @@
         group: root
         mode: 0700
 - name: Slurm execution hosts
-  hosts: slaves
+  hosts: computes
   roles:
     - role: ansible-slurm
       become: True
@@ -112,7 +112,7 @@
     slurm_create_user: yes
     slurm_munge_key: "/etc/munge/munge.key"
     slurm_nodes:
-      - name: "{{ groups['slaves']| join(',') }}"
+      - name: "{{ groups['computes']| join(',') }}"
         CoresPerSocket: 1
         Sockets: 1
         ThreadsPerCore: 1
@@ -120,7 +120,7 @@
       - name: computing_nodes
         Default: YES
         MaxTime: UNLIMITED
-        Nodes: "{{ groups['slaves']| join(',') }}"
+        Nodes: "{{ groups['computes']| join(',') }}"
     slurm_roles: [ 'exec' ]
     slurm_user:
       comment: "Slurm Workload Manager"
@@ -131,13 +131,10 @@
       shell: "/usr/sbin/nologin"
       uid: 888
 - name: Cpying munge key to nodes
-  hosts: slaves
+  hosts: slurm-controller
   tasks:
-    - name: Cpying munge key to nodes
-      become: true
-      copy:
+    - name: Transfer munge.key from controller to nodes
+      synchronize:
         src: /etc/munge/munge.key
         dest: /etc/munge
-        owner: munge
-        group: munge
-        mode: 0700
+      delegate_to: "{{ inventory_hostname }}"
