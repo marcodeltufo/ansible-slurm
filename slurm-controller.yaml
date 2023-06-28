@@ -2,6 +2,16 @@
   hosts: controller
 
   tasks:
+  - name: Add group "munge"
+    group:
+      name: munge
+      gid: 9000
+  - name: Create munge user
+    ansible.builtin.user:
+      name: munge
+      state: present
+      uid: 9000
+      groups: munge
   - name: Create slurm user
     ansible.builtin.user:
       name: slurm
@@ -77,7 +87,7 @@
       MinRAMSpace: 30
     slurm_config:
       ClusterName: ansible-test-cluster
-      SlurmctldHost: ansible-slurm-test
+      SlurmctldHost: ansible-slurm-5
       MailProg: "/bin/mail"
       MpiDefault: none
       AuthInfo: "/var/run/munge/munge.socket.2"
