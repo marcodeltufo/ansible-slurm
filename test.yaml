@@ -1,0 +1,8 @@
+- name: Copying munge key to nodes
+  hosts: computes
+  tasks:
+    - name: Transfer munge.key from controller to nodes
+      synchronize:
+        src: /etc/munge/munge.key
+        dest: /etc/munge/
+      delegate_to: ansible-slurm-1

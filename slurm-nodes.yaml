@@ -146,8 +146,8 @@
       name: slurm
       shell: "/usr/sbin/nologin"
       uid: 888
-- name: Cpying munge key to nodes
-  hosts: "{{ inventory_hostname }}"
+- name: Copying munge key to nodes
+  hosts: computes
   tasks:
     - name: Transfer munge.key from controller to nodes
       synchronize:
