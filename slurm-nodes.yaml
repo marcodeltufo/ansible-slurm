@@ -147,10 +147,10 @@
       shell: "/usr/sbin/nologin"
       uid: 888
 - name: Cpying munge key to nodes
-  hosts: ansible-slurm-1
+  hosts: "{{ inventory_hostname }}"
   tasks:
     - name: Transfer munge.key from controller to nodes
       synchronize:
         src: /etc/munge/munge.key
-        dest: /etc/munge
-      delegate_to: "{{ inventory_hostname }}"
+        dest: /etc/munge/
+      delegate_to: ansible-slurm-1
