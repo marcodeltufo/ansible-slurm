@@ -73,7 +73,7 @@
       MinRAMSpace: 30
     slurm_config:
       ClusterName: ansible-test-cluster
-      SlurmctldHost: ansible-slurm-5
+      SlurmctldHost: ansible-slurm-1
       MailProg: "/bin/mail"
       MpiDefault: none
       AuthInfo: "/var/run/munge/munge.socket.2"
@@ -147,7 +147,7 @@
       shell: "/usr/sbin/nologin"
       uid: 888
 - name: Cpying munge key to nodes
-  hosts: ansible-slurm-5
+  hosts: ansible-slurm-1
   tasks:
     - name: Transfer munge.key from controller to nodes
       synchronize:
