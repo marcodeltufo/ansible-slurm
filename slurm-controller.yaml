@@ -93,7 +93,7 @@
       MinRAMSpace: 30
     slurm_config:
       ClusterName: ansible-test-cluster
-      SlurmctldHost: ansible-slurm-5
+      SlurmctldHost: ansible-slurm-1
       MailProg: "/bin/mail"
       MpiDefault: none
       AuthInfo: "/var/run/munge/munge.socket.2"
